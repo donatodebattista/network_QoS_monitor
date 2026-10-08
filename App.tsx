@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
@@ -10,7 +11,7 @@ import {
   SafeAreaProvider,
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
-import { NetworkStatus } from './src/presentation';
+import { NetworkStatus, CellularMetricsCard } from './src/presentation';
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -31,22 +32,27 @@ function AppContent(): React.JSX.Element {
       style={[
         styles.container,
         {
-          paddingTop: insets.top + 24,
-          paddingBottom: insets.bottom + 20,
+          paddingTop: insets.top + 16,
+          paddingBottom: insets.bottom + 12,
         },
       ]}>
       <View style={styles.header}>
         <Text style={styles.title}>Network QoS Monitor</Text>
-        <Text style={styles.subtitle}>Etapa 1 • Detección y Estado de Red</Text>
+        <Text style={styles.subtitle}>
+          Monitoreo de Calidad de Servicio y Cobertura
+        </Text>
       </View>
 
-      <View style={styles.content}>
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}>
         <NetworkStatus />
-      </View>
+        <CellularMetricsCard />
+      </ScrollView>
 
       <View style={styles.footer}>
         <Text style={styles.footerText}>
-          FCyT - Lic. en Sistemas de Información
+          FCyT - Lic. en Sistemas de Información • 2026
         </Text>
       </View>
     </View>
@@ -57,11 +63,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F8FAFC',
-    justifyContent: 'space-between',
   },
   header: {
     paddingHorizontal: 20,
-    marginBottom: 20,
+    marginBottom: 12,
   },
   title: {
     fontSize: 24,
@@ -70,21 +75,21 @@ const styles = StyleSheet.create({
     letterSpacing: -0.5,
   },
   subtitle: {
-    fontSize: 14,
+    fontSize: 13,
     color: '#64748B',
-    marginTop: 4,
+    marginTop: 2,
     fontWeight: '500',
   },
-  content: {
-    flex: 1,
-    justifyContent: 'center',
+  scrollContent: {
+    paddingVertical: 8,
+    gap: 16,
   },
   footer: {
     alignItems: 'center',
-    paddingVertical: 12,
+    paddingTop: 8,
   },
   footerText: {
-    fontSize: 12,
+    fontSize: 11,
     color: '#94A3B8',
     fontWeight: '500',
   },
