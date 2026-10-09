@@ -41,3 +41,38 @@ export type PingProgressCallback = (
   totalProbes: number,
   partialStats: PingSessionStats
 ) => void;
+
+// --- Throughput Types ---
+
+export interface ThroughputMetric {
+  speedMbps: number;
+  transferredBytes: number;
+  durationMs: number;
+}
+
+export type ThroughputPhase = 'idle' | 'downloading' | 'uploading' | 'completed' | 'error';
+
+export interface ThroughputProgress {
+  phase: ThroughputPhase;
+  instantSpeedMbps: number;
+  progressPercent: number;
+  transferredBytes: number;
+  totalExpectedBytes?: number;
+}
+
+export type ThroughputProgressCallback = (progress: ThroughputProgress) => void;
+
+export interface ThroughputSessionResult {
+  download: ThroughputMetric | null;
+  upload: ThroughputMetric | null;
+  serverUrl: string;
+  timestamp: number;
+}
+
+export interface ThroughputServerConfig {
+  id: string;
+  name: string;
+  downloadUrl: string;
+  uploadUrl: string;
+  isCustom?: boolean;
+}

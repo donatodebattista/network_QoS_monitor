@@ -15,6 +15,7 @@ import {
   NetworkStatus,
   CellularMetricsCard,
   PingEngineCard,
+  ThroughputEngineCard,
 } from './src/presentation';
 
 function App(): React.JSX.Element {
@@ -53,6 +54,7 @@ function AppContent(): React.JSX.Element {
         <NetworkStatus />
         <CellularMetricsCard />
         <PingEngineCard />
+        <ThroughputEngineCard />
       </ScrollView>
 
       <View style={styles.footer}>
