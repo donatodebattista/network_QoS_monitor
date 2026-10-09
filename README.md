@@ -2,11 +2,11 @@
 
 **Analizador y Visualizador de Calidad de Servicio y Cobertura de Red Móvil en Tiempo Real**
 
-* **Institución:** Facultad de Ciencia y Tecnología (FCyT) — Sede Concepción del Uruguay
-* **Universidad:** Universidad Autónoma de Entre Ríos (UADER)
-* **Carrera:** Licenciatura en Sistemas de Información
-* **Cátedra:** Desarrollo de Aplicaciones Móviles — Ciclo Lectivo 2026
-* **Tecnología:** React Native CLI (v0.87 con Nueva Arquitectura / Fabric / TurboModules) & Android Nativo (Kotlin)
+* **Plataforma:** Android (API 29 a API 35+)
+* **Framework:** React Native CLI (v0.87 con Nueva Arquitectura / Fabric / TurboModules)
+* **Capa Nativa:** Android (Kotlin con `TelephonyManager` y `NotificationCompat`)
+* **Backend de Referencia:** Node.js (Throughput HTTP Streams & Docker ready)
+* **Testing & Calidad:** Jest (100% pruebas pasando), ESLint y TypeScript estricto
 
 ---
 
@@ -14,7 +14,7 @@
 
 En el despliegue y consumo de servicios móviles, la **Calidad de Servicio (QoS - Quality of Service)** y la **Calidad de Experiencia (QoE - Quality of Experience)** del usuario final son variables dinámicas fuertemente influenciadas por la geografía urbana, la atenuación de propagación de radiofrecuencia (RSRP), la congestión de celdas celulares y el enrutamiento de paquetes en la red troncal.
 
-Este proyecto aborda la ingeniería y desarrollo de una aplicación móvil multiplataforma que desciende por debajo de las abstracciones estándar de frameworks híbridos, implementando:
+Este proyecto aborda la ingeniería y desarrollo de una aplicación móvil multiplataforma de grado profesional que desciende por debajo de las abstracciones estándar de frameworks híbridos, implementando:
 1. **Acceso directo a capas de radiofrecuencia celular** mediante un módulo nativo en Kotlin (`TelephonyManager`).
 2. **Medición activa de latencia real y jitter** a nivel de sockets TCP crudos (`RFC 3550`).
 3. **Prueba de rendimiento (Throughput)** de descarga y subida contra un backend de referencia HTTP.
@@ -100,7 +100,7 @@ $$D(i, j) = |R_j - R_i|$$
 $$J_i = J_{i-1} + \frac{|D(i, j)| - J_{i-1}}{16}$$
 
 ### 3. Visualización Geoespacial Libre (OpenStreetMap + Leaflet)
-Para evitar la dependencia de claves de facturación (API Keys) de Google Cloud Console y evitar bloqueos en entornos de evaluación académica, el mapa se implementó con **Leaflet.js** y teselas de **OpenStreetMap** embebidas mediante `react-native-webview`:
+Para evitar la dependencia de claves de facturación privativas (API Keys) de Google Cloud Console y garantizar una solución 100% de código abierto, libre y reproducible, el mapa se implementó con **Leaflet.js** y teselas de **OpenStreetMap** embebidas mediante `react-native-webview`:
 - **Modo Pines:** Marcadores circulares con código de colores según calidad (Verde $\ge -85\text{ dBm}$, Ámbar, Rojo $< -105\text{ dBm}$) con tooltips emergentes detallados.
 - **Modo Heatmap:** Halos concéntricos ponderados que ilustran la dispersión de calidad y zonas ciegas.
 
@@ -206,26 +206,3 @@ npm run lint
 1. **Optimizaciones de Batería en Android (Doze Mode):** En Android 12+, el sistema operativo puede retardar tareas periódicas de fondo cuando el dispositivo entra en reposo profundo. Como trabajo futuro, se puede integrar un Android Foreground Service con notificación persistente para muestreos de alta frecuencia en campo.
 2. **Compatibilidad con iOS:** La API `CoreTelephony` de Apple restringe el acceso al valor numérico exacto de dBm por políticas de privacidad de la App Store, exponiendo únicamente indicadores de barras o tecnología celular.
 3. **Validación Cruzada con Datos Abiertos:** Integración futura con APIs de **OpenCelliD** y **Mozilla Location Service** para contrastar la cobertura medida con registros globales de antenas.
-
----
-
-## 09. Guión para el Video Demostrativo (3 a 5 min)
-
-Para la entrega del video exigido por la cátedra, se sugiere seguir esta estructura:
-
-1. **0:00 - 0:45 | Introducción y Métricas Nativas:**
-   - Presentar la app en el dispositivo físico.
-   - Mostrar la tarjeta **Estado de Red** (Wi-Fi / Móvil) y la tarjeta **Métricas Celulares Nativas**, destacando la lectura en tiempo real de operador, RSRP en dBm, TAC y Cell ID obtenidos mediante Kotlin.
-2. **0:45 - 1:45 | Pruebas de Latencia y Velocidad:**
-   - Ejecutar una sesión de 10 sondas en la tarjeta **TCP Sockets** (mostrando el cálculo de RTT y Jitter RFC 3550).
-   - Ejecutar el **Test de Velocidad** contra el servidor local o Cloudflare CDN (observando la velocidad de descarga y subida en Mbps).
-3. **1:45 - 2:45 | Historial, Mapa y Series Temporales:**
-   - Capturar una muestra georreferenciada con GPS en la tarjeta de historial.
-   - Navegar al **Mapa de Cobertura**: alternar entre el modo *Pines* (pulsar un marcador para ver el popup) y el modo *Heatmap*.
-   - Observar el **Gráfico de Serie Temporal**: cambiar entre las pestañas de *Señal (dBm)*, *Latencia (ms)* y *Throughput (Mbps)*.
-4. **2:45 - 3:30 | Monitoreo en Background y Alertas:**
-   - Ir a la tarjeta **Monitoreo en Segundo Plano**.
-   - Pulsar *"Probar Notificación"* para mostrar cómo aparece y suena la alerta local en la barra de notificaciones del teléfono.
-   - Activar el interruptor de muestreo periódico continuo.
-5. **3:30 - 4:00 | Exportación y Cierre:**
-   - En la tarjeta de historial, pulsar *"Exportar JSON"* y *"Exportar CSV"*, demostrando la capacidad de extraer los datos para su posterior análisis en herramientas como QGIS o Excel.
