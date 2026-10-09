@@ -15,6 +15,10 @@ import {
   SingleProbeResult,
   executePingSession,
 } from '../../measurement-engine';
+import NetInfo from '@react-native-community/netinfo';
+import { getCellularQoSInfo } from '../../native-bridge';
+import { getCurrentCoordinates } from '../../geo';
+import { saveMeasurement, QoSMeasurementRecord } from '../../persistence';
 
 export const PingEngineCard: React.FC = () => {
   const [selectedTarget, setSelectedTarget] = useState<PingTarget>(
@@ -53,6 +57,42 @@ export const PingEngineCard: React.FC = () => {
         abortControllerRef.current
       );
       setFinalResult(result);
+
+      // Auto-guardar en persistencia para series temporales e historial
+      try {
+        const [netState, cellularInfo, coords] = await Promise.all([
+          NetInfo.fetch(),
+          getCellularQoSInfo().catch(() => null),
+          getCurrentCoordinates().catch(() => null),
+        ]);
+
+        const record: QoSMeasurementRecord = {
+          id: `ping_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+          timestamp: Date.now(),
+          isoDate: new Date().toLocaleString(),
+          connectionType: netState.type || 'unknown',
+          isInternetReachable: Boolean(netState.isInternetReachable),
+          carrierName: cellularInfo?.operatorName || (netState.type === 'cellular' ? 'Celular' : undefined),
+          cellularGeneration: cellularInfo?.networkType || undefined,
+          signalDbm: cellularInfo && cellularInfo.signalDbm !== -999 ? cellularInfo.signalDbm : undefined,
+          signalLevel: cellularInfo && cellularInfo.signalLevel !== -1 ? cellularInfo.signalLevel : undefined,
+          cellId: cellularInfo?.cellId ?? null,
+          tac: cellularInfo?.tac ?? null,
+          pingTargetHost: selectedTarget.host,
+          rttAvgMs: result.avgRttMs,
+          rttMinMs: result.minRttMs,
+          rttMaxMs: result.maxRttMs,
+          jitterMs: result.jitterMs,
+          packetLossPercent: result.packetLossPercent,
+          latitude: coords?.latitude ?? null,
+          longitude: coords?.longitude ?? null,
+          accuracy: coords?.accuracy ?? null,
+        };
+
+        await saveMeasurement(record);
+      } catch (saveErr) {
+        console.warn('Error al auto-guardar medición de ping:', saveErr);
+      }
     } catch (error) {
       console.warn('Error en la sesión de ping:', error);
     } finally {

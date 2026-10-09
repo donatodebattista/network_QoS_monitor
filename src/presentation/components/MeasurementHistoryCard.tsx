@@ -10,6 +10,7 @@ import {
 import NetInfo from '@react-native-community/netinfo';
 import { getCellularQoSInfo } from '../../native-bridge';
 import { getCurrentCoordinates } from '../../geo';
+import { executeSingleProbe, DEFAULT_PING_TARGETS } from '../../measurement-engine';
 import {
   QoSMeasurementRecord,
   HistorySummary,
@@ -53,19 +54,18 @@ export const MeasurementHistoryCard: React.FC = () => {
     try {
       setSaving(true);
 
-      // 1. Obtener estado de red y telefonía
-      const [netState, cellularInfo] = await Promise.all([
+      // 1. Obtener estado de red, telefonía, GPS y sonda rápida de latencia
+      const [netState, cellularInfo, coords, probeResult] = await Promise.all([
         NetInfo.fetch(),
         getCellularQoSInfo().catch(() => null),
+        getCurrentCoordinates().catch(() => null),
+        executeSingleProbe(
+          DEFAULT_PING_TARGETS[0].host,
+          DEFAULT_PING_TARGETS[0].port,
+          1,
+          1500
+        ).catch(() => null),
       ]);
-
-      // 2. Obtener GPS (con fallback seguro)
-      let coords = null;
-      try {
-        coords = await getCurrentCoordinates();
-      } catch (geoErr) {
-        console.warn('GPS no disponible para el snapshot:', geoErr);
-      }
 
       const now = new Date();
       const record: QoSMeasurementRecord = {
@@ -82,6 +82,10 @@ export const MeasurementHistoryCard: React.FC = () => {
         signalLevel: cellularInfo && cellularInfo.signalLevel !== -1 ? cellularInfo.signalLevel : undefined,
         cellId: cellularInfo?.cellId ?? null,
         tac: cellularInfo?.tac ?? null,
+
+        // Sonda de Latencia instantánea
+        pingTargetHost: probeResult?.success ? DEFAULT_PING_TARGETS[0].host : undefined,
+        rttAvgMs: probeResult?.success ? probeResult.rttMs : null,
 
         // GPS
         latitude: coords?.latitude ?? null,
