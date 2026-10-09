@@ -18,6 +18,8 @@ import {
   ThroughputEngineCard,
   LocationCard,
   MeasurementHistoryCard,
+  QoSMapView,
+  TimeSeriesChart,
 } from './src/presentation';
 
 function App(): React.JSX.Element {
@@ -56,6 +58,8 @@ function AppContent(): React.JSX.Element {
         <NetworkStatus />
         <CellularMetricsCard />
         <LocationCard />
+        <QoSMapView />
+        <TimeSeriesChart />
         <PingEngineCard />
         <ThroughputEngineCard />
         <MeasurementHistoryCard />

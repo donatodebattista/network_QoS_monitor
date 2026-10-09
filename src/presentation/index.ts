@@ -4,3 +4,5 @@ export * from './components/PingEngineCard';
 export * from './components/ThroughputEngineCard';
 export * from './components/LocationCard';
 export * from './components/MeasurementHistoryCard';
+export * from './components/QoSMapView';
+export * from './components/TimeSeriesChart';

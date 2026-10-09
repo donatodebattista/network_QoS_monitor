@@ -14,6 +14,10 @@ import {
   ThroughputSessionResult,
   executeFullThroughputTest,
 } from '../../measurement-engine';
+import NetInfo from '@react-native-community/netinfo';
+import { getCellularQoSInfo } from '../../native-bridge';
+import { getCurrentCoordinates } from '../../geo';
+import { saveMeasurement, QoSMeasurementRecord } from '../../persistence';
 
 export const ThroughputEngineCard: React.FC = () => {
   const [selectedServer, setSelectedServer] = useState<ThroughputServerConfig>(
@@ -75,6 +79,38 @@ export const ThroughputEngineCard: React.FC = () => {
         abortRef.current
       );
       setResult(sessionResult);
+
+      // Auto-guardar medición de Throughput en persistencia
+      try {
+        const [netState, cellularInfo, coords] = await Promise.all([
+          NetInfo.fetch(),
+          getCellularQoSInfo().catch(() => null),
+          getCurrentCoordinates().catch(() => null),
+        ]);
+
+        const record: QoSMeasurementRecord = {
+          id: `speed_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+          timestamp: Date.now(),
+          isoDate: new Date().toLocaleString(),
+          connectionType: netState.type || 'unknown',
+          isInternetReachable: Boolean(netState.isInternetReachable),
+          carrierName: cellularInfo?.operatorName || (netState.type === 'cellular' ? 'Celular' : undefined),
+          cellularGeneration: cellularInfo?.networkType || undefined,
+          signalDbm: cellularInfo && cellularInfo.signalDbm !== -999 ? cellularInfo.signalDbm : undefined,
+          signalLevel: cellularInfo && cellularInfo.signalLevel !== -1 ? cellularInfo.signalLevel : undefined,
+          cellId: cellularInfo?.cellId ?? null,
+          tac: cellularInfo?.tac ?? null,
+          downloadSpeedMbps: sessionResult.download?.speedMbps ?? null,
+          uploadSpeedMbps: sessionResult.upload?.speedMbps ?? null,
+          latitude: coords?.latitude ?? null,
+          longitude: coords?.longitude ?? null,
+          accuracy: coords?.accuracy ?? null,
+        };
+
+        await saveMeasurement(record);
+      } catch (saveErr) {
+        console.warn('Error al auto-guardar medición de velocidad:', saveErr);
+      }
     } catch (err: unknown) {
       if (err instanceof Error && !abortRef.current.isAborted) {
         setError(err.message);
