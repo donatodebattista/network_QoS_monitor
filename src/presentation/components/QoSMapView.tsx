@@ -269,7 +269,7 @@ export const QoSMapView: React.FC = () => {
       <View style={styles.header}>
         <View style={styles.headerTitleContainer}>
           <Text style={styles.badge}>MAPA & HEATMAP</Text>
-          <Text style={styles.headerTitle}>Cobertura y Calidad (Etapa 5)</Text>
+          <Text style={styles.headerTitle}>Cobertura y Calidad</Text>
         </View>
 
         <TouchableOpacity onPress={centerOnUser} style={styles.centerButton}>
@@ -392,9 +392,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headerTitleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+    flex: 1,
+    marginRight: 12,
   },
   badge: {
     backgroundColor: '#FEF3C7',
@@ -405,6 +404,8 @@ const styles = StyleSheet.create({
     paddingVertical: 2,
     borderRadius: 4,
     overflow: 'hidden',
+    alignSelf: 'flex-start',
+    marginBottom: 4,
   },
   headerTitle: {
     fontSize: 16,
@@ -412,8 +413,9 @@ const styles = StyleSheet.create({
     color: '#111827',
   },
   centerButton: {
-    paddingVertical: 4,
-    paddingHorizontal: 10,
+    flexShrink: 0,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
     borderRadius: 8,
     backgroundColor: '#F3F4F6',
   },

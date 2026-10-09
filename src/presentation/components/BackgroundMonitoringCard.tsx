@@ -109,7 +109,7 @@ export const BackgroundMonitoringCard: React.FC = () => {
     }
 
     const sent = await showQoSNotification({
-      title: '🚨 Prueba de Alerta QoS (Etapa 6)',
+      title: '🚨 Prueba de Alerta QoS',
       message: 'Notificación nativa verificada. El sistema alertará aquí ante caídas de cobertura o alta latencia.',
       isWarning: true,
     });
@@ -125,7 +125,7 @@ export const BackgroundMonitoringCard: React.FC = () => {
       <View style={styles.header}>
         <View style={styles.headerTitleContainer}>
           <Text style={styles.badge}>MUESTREO & ALERTAS</Text>
-          <Text style={styles.headerTitle}>Monitoreo en Segundo Plano (Etapa 6)</Text>
+          <Text style={styles.headerTitle}>Monitoreo en Segundo Plano</Text>
         </View>
 
         <Switch
@@ -298,9 +298,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headerTitleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+    flex: 1,
+    marginRight: 12,
   },
   badge: {
     backgroundColor: '#F3E8FF',
@@ -311,6 +310,8 @@ const styles = StyleSheet.create({
     paddingVertical: 2,
     borderRadius: 4,
     overflow: 'hidden',
+    alignSelf: 'flex-start',
+    marginBottom: 4,
   },
   headerTitle: {
     fontSize: 16,
@@ -320,7 +321,7 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 12,
     color: '#6B7280',
-    marginTop: 4,
+    marginTop: 6,
   },
   divider: {
     height: 1,

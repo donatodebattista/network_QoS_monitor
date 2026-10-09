@@ -158,7 +158,7 @@ export const MeasurementHistoryCard: React.FC = () => {
       <View style={styles.header}>
         <View style={styles.headerTitleContainer}>
           <Text style={styles.badge}>PERSISTENCIA</Text>
-          <Text style={styles.headerTitle}>Historial QoS & GPS (Etapa 4)</Text>
+          <Text style={styles.headerTitle}>Historial QoS & GPS</Text>
         </View>
 
         <TouchableOpacity
@@ -336,9 +336,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headerTitleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+    flex: 1,
+    marginRight: 12,
   },
   badge: {
     backgroundColor: '#F3E8FF',
@@ -349,6 +348,8 @@ const styles = StyleSheet.create({
     paddingVertical: 2,
     borderRadius: 4,
     overflow: 'hidden',
+    alignSelf: 'flex-start',
+    marginBottom: 4,
   },
   headerTitle: {
     fontSize: 16,
@@ -356,6 +357,7 @@ const styles = StyleSheet.create({
     color: '#111827',
   },
   captureButton: {
+    flexShrink: 0,
     backgroundColor: '#7E22CE',
     paddingVertical: 6,
     paddingHorizontal: 12,

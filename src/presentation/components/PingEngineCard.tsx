@@ -127,7 +127,7 @@ export const PingEngineCard: React.FC = () => {
       <View style={styles.header}>
         <View style={styles.headerTitleContainer}>
           <Text style={styles.badge}>TCP SOCKETS</Text>
-          <Text style={styles.headerTitle}>Sondas de Ping y Jitter (Etapa 3)</Text>
+          <Text style={styles.headerTitle}>Sondas de Ping y Jitter</Text>
         </View>
       </View>
 
@@ -328,9 +328,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headerTitleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+    flex: 1,
   },
   badge: {
     backgroundColor: '#E0E7FF',
@@ -341,6 +339,8 @@ const styles = StyleSheet.create({
     paddingVertical: 2,
     borderRadius: 4,
     overflow: 'hidden',
+    alignSelf: 'flex-start',
+    marginBottom: 4,
   },
   headerTitle: {
     fontSize: 16,
