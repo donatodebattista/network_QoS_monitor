@@ -20,6 +20,7 @@ import {
   MeasurementHistoryCard,
   QoSMapView,
   TimeSeriesChart,
+  BackgroundMonitoringCard,
 } from './src/presentation';
 
 function App(): React.JSX.Element {
@@ -63,6 +64,7 @@ function AppContent(): React.JSX.Element {
         <PingEngineCard />
         <ThroughputEngineCard />
         <MeasurementHistoryCard />
+        <BackgroundMonitoringCard />
       </ScrollView>
 
       <View style={styles.footer}>

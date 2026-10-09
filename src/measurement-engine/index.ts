@@ -5,3 +5,4 @@
 export * from './types';
 export * from './ping-engine';
 export * from './throughput-engine';
+export * from './background-sampler';
