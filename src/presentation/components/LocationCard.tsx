@@ -58,7 +58,7 @@ export const LocationCard: React.FC = () => {
       <View style={styles.header}>
         <View style={styles.headerTitleContainer}>
           <Text style={styles.badge}>GPS / GEO</Text>
-          <Text style={styles.headerTitle}>Geolocalización (Etapa 4)</Text>
+          <Text style={styles.headerTitle}>Geolocalización</Text>
         </View>
 
         <TouchableOpacity
@@ -158,9 +158,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headerTitleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+    flex: 1,
+    marginRight: 12,
   },
   badge: {
     backgroundColor: '#E0F2FE',
@@ -171,6 +170,8 @@ const styles = StyleSheet.create({
     paddingVertical: 2,
     borderRadius: 4,
     overflow: 'hidden',
+    alignSelf: 'flex-start',
+    marginBottom: 4,
   },
   headerTitle: {
     fontSize: 16,
@@ -178,8 +179,9 @@ const styles = StyleSheet.create({
     color: '#111827',
   },
   refreshButton: {
-    paddingVertical: 4,
-    paddingHorizontal: 10,
+    flexShrink: 0,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
     borderRadius: 8,
     backgroundColor: '#F3F4F6',
   },
