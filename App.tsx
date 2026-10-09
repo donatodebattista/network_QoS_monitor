@@ -11,7 +11,11 @@ import {
   SafeAreaProvider,
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
-import { NetworkStatus, CellularMetricsCard } from './src/presentation';
+import {
+  NetworkStatus,
+  CellularMetricsCard,
+  PingEngineCard,
+} from './src/presentation';
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -48,6 +52,7 @@ function AppContent(): React.JSX.Element {
         showsVerticalScrollIndicator={false}>
         <NetworkStatus />
         <CellularMetricsCard />
+        <PingEngineCard />
       </ScrollView>
 
       <View style={styles.footer}>
