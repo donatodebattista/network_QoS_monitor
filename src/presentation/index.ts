@@ -6,3 +6,4 @@ export * from './components/LocationCard';
 export * from './components/MeasurementHistoryCard';
 export * from './components/QoSMapView';
 export * from './components/TimeSeriesChart';
+export * from './components/BackgroundMonitoringCard';
